@@ -46,31 +46,32 @@ message: text content of the SMS
 
 ⚙️ How to Run
 1. Clone the Repository
-bash
-Copy
-Edit
 git clone https://github.com/yourusername/spam_classifier.git
 cd spam_classifier
+
 2. Install Dependencies
-bash
-Copy
-Edit
 pip install -r requirements.txt
+
 3. Run the Notebook
 Open and run the Jupyter Notebook:
-
 jupyter notebook spam_classifier.ipynb
+
 4. Predict
 You can input a new message at the bottom of the notebook or use the model in a separate Python file:
 
-import pickle
+def predict_message(msg):
+    msg_clean = preprocess(msg)
+    msg_vec = tfidf.transform([msg_clean])
+    prediction = model.predict(msg_vec)[0]
+    return 'Spam' if prediction == 1 else 'Ham'
 
-model = pickle.load(open('model.pkl', 'rb'))
-vectorizer = pickle.load(open('vectorizer.pkl', 'rb'))
+test_messages = [
+    "URGENT! You have won a lottery worth 2 crores. Call this number now!",
+]
 
-message = ["Congratulations! You've won a prize!"]
-vector = vectorizer.transform(message)
-print(model.predict(vector))
+for msg in test_messages:
+    print(f" Message: {msg}")
+    print(f" Prediction: {predict_message(msg)}\n")
 
 📦 Requirements
 pandas
